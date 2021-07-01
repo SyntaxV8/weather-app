@@ -31,4 +31,9 @@ header {
   display: none;
 }
 
+.icon {
+  width: 125px;
+  height: auto;
+}
+
 /*# sourceMappingURL=weather.css.map */

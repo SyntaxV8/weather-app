@@ -11,12 +11,13 @@ let date2;
 let date3;
 let date4;
 let date5;
+let current;
 
 calcTemperatures = () => {
 
     entries = Object.entries(dates)
 
-    let current = entries[0][1][0]
+    current = entries[0][1][0]
     currentTemp = Math.floor(current.main.temp - 273.15)
     currentDesc = current.weather[0].description
 
@@ -24,7 +25,6 @@ calcTemperatures = () => {
     date3 = entries[2][1]
     date4 = entries[3][1]
     date5 = entries[4][1]
-
 
     avgTempDate2 = 0;
     for (let i = 0; i < date2.length; i++) {
@@ -51,7 +51,6 @@ calcTemperatures = () => {
     avgTempDate5 = Math.floor((avgTempDate5 / date5.length) - 273.15)
 }
 
-
 styling = () => {
 
     document.getElementById('weatherCards').classList.remove('noDisplay')
@@ -71,8 +70,33 @@ styling = () => {
     document.getElementById('desc3').innerHTML = date3[3].weather[0].description
     document.getElementById('desc4').innerHTML = date4[3].weather[0].description
     document.getElementById('desc5').innerHTML = date5[3].weather[0].description
+
 }
 
+icons = () => {
+
+    let icon1 = current.weather[0].icon
+    let icon2 = date2[3].weather[0].icon
+    let icon3 = date3[3].weather[0].icon
+    let icon4 = date4[3].weather[0].icon
+    let icon5 = date5[3].weather[0].icon
+
+    let icon1Img = document.getElementById('icon1')
+    icon1Img.src = `http://openweathermap.org/img/wn/${icon1}@2x.png`
+
+    let icon2Img = document.getElementById('icon2')
+    icon2Img.src = `http://openweathermap.org/img/wn/${icon2}@2x.png`
+
+    let icon3Img = document.getElementById('icon3')
+    icon3Img.src = `http://openweathermap.org/img/wn/${icon3}@2x.png`
+
+    let icon4Img = document.getElementById('icon4')
+    icon4Img.src = `http://openweathermap.org/img/wn/${icon4}@2x.png`
+
+    let icon5Img = document.getElementById('icon5')
+    icon5Img.src = `http://openweathermap.org/img/wn/${icon5}@2x.png`
+
+}
 
 weather = () => {
 
@@ -104,6 +128,7 @@ weather = () => {
             })
             .then(calcTemperatures)
             .then(styling)
+            .then(icons)
     })
 }
 
