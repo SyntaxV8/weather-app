@@ -33,7 +33,6 @@ weather = () => {
                 styling(cityName, entries);
                 icons(entries);
 
-                console.log(entries)
             })
     })
 }
@@ -42,6 +41,20 @@ calcTemperatures = (entries) => {
 
     entries[0][1].currentTemp = Math.floor(entries[0][1][0].main.temp - 273.15)
     entries[0][1].currentDesc = entries[0][1][0].weather[0].description
+
+    /*let tempArray = []
+    for (let i = 1; i <= 4; i++){
+        let day = entries[i][1];
+        entries.push(day)
+
+        let tmpAvg = 0;
+        for (let i = 0; i < day.length; i++) {
+            tmpAvg += day[i].main.temp;
+        }
+        tempArray.push(Math.floor((tmpAvg / day.length) - 273.15));
+    }
+    console.log(tempArray)
+     */
 
     let date2 = entries[1][1]
     let date3 = entries[2][1]
