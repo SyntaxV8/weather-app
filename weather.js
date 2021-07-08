@@ -1,6 +1,6 @@
 let currentTemp;
 let currentDesc;
-let avgTempDate2;
+// let avgTempDate2;
 let avgTempDate3;
 let avgTempDate4;
 let avgTempDate5;
@@ -33,10 +33,10 @@ weather = () => {
                 }
 
                 // covert to array
-                const entries = Object.entries(dates)
+                let entries = Object.entries(dates)
 
-
-                calcTemperatures(entries);
+                console.log(entries)
+                entries = calcTemperatures(entries);
                 styling(cityName, entries);
                 icons(entries);
             })
@@ -55,11 +55,11 @@ calcTemperatures = (entries) => {
     let date4 = entries[3][1]
     let date5 = entries[4][1]
 
-    avgTempDate2 = 0;
+    let avgTempDate2 = 0;
     for (let i = 0; i < date2.length; i++) {
         avgTempDate2 += date2[i].main.temp;
     }
-    avgTempDate2 = Math.floor((avgTempDate2 / date2.length) - 273.15)
+    entries[1][1].averageTemperature = Math.floor((avgTempDate2 / date2.length) - 273.15)
 
     avgTempDate3 = 0;
     for (let i = 0; i < date3.length; i++) {
@@ -79,6 +79,7 @@ calcTemperatures = (entries) => {
     }
     avgTempDate5 = Math.floor((avgTempDate5 / date5.length) - 273.15)
 
+    return entries;
 }
 
 styling = (cityName, entries) => {
@@ -92,7 +93,7 @@ styling = (cityName, entries) => {
     document.getElementById('name5').innerHTML = entries[4][0]
     document.getElementById('currentTemp').innerHTML = currentTemp + '°C.'
     document.getElementById('currentDesc').innerHTML = currentDesc
-    document.getElementById('avgTemp1').innerHTML = avgTempDate2 + '°C.'
+    document.getElementById('avgTemp1').innerHTML = entries[1][1].averageTemperature + '°C.'
     document.getElementById('avgTemp2').innerHTML = avgTempDate3 + '°C.'
     document.getElementById('avgTemp3').innerHTML = avgTempDate4 + '°C.'
     document.getElementById('avgTemp4').innerHTML = avgTempDate5 + '°C.'
