@@ -1,5 +1,3 @@
-let cityName;
-let dates;
 let currentTemp;
 let currentDesc;
 let avgTempDate2;
@@ -7,24 +5,54 @@ let avgTempDate3;
 let avgTempDate4;
 let avgTempDate5;
 let entries;
-let date2;
-let date3;
-let date4;
-let date5;
-let current;
+
+weather = () => {
+
+    document.getElementById("run").addEventListener("click", function () {
+
+        let cityInput = document.getElementById('form1').value
+
+        fetch (`http://api.openweathermap.org/data/2.5/forecast?q=${cityInput}&appid=a33b814fb5f71647a19972bf2ab409d1`)
+            .then(response => {return response.json()})
+            .then(data => {
+
+                let cityName = data.city.name;
+                let arrayDataLength = data.list.length
+
+                let dates = []
+
+                for (let i = 0; i < arrayDataLength; i++){
+                    let dateMil = data.list[i].dt
+                    let newDate = new Date(dateMil*1000);
+                    let day = newDate.getUTCDate();
+                    let month = newDate.getMonth() + 1;
+                    let date = day +'/'+ month;
+
+                    if (!(date in dates)) {dates[date]= [];}
+
+                    dates[date].push(data.list[i]);
+                }
+
+                entries = Object.entries(dates)
+
+                calcTemperatures();
+                styling(cityName);
+                icons();
+            })
+    })
+}
 
 calcTemperatures = () => {
 
-    entries = Object.entries(dates)
 
-    current = entries[0][1][0]
-    currentTemp = Math.floor(current.main.temp - 273.15)
-    currentDesc = current.weather[0].description
 
-    date2 = entries[1][1]
-    date3 = entries[2][1]
-    date4 = entries[3][1]
-    date5 = entries[4][1]
+    currentTemp = Math.floor(entries[0][1][0].main.temp - 273.15)
+    currentDesc = entries[0][1][0].weather[0].description
+
+    let date2 = entries[1][1]
+    let date3 = entries[2][1]
+    let date4 = entries[3][1]
+    let date5 = entries[4][1]
 
     avgTempDate2 = 0;
     for (let i = 0; i < date2.length; i++) {
@@ -49,9 +77,10 @@ calcTemperatures = () => {
         avgTempDate5 += date5[i].main.temp;
     }
     avgTempDate5 = Math.floor((avgTempDate5 / date5.length) - 273.15)
+
 }
 
-styling = () => {
+styling = (cityName) => {
 
     document.getElementById('weatherCards').classList.remove('noDisplay')
     document.getElementById('cityName').classList.remove('noDisplay')
@@ -66,20 +95,20 @@ styling = () => {
     document.getElementById('avgTemp2').innerHTML = avgTempDate3 + '°C.'
     document.getElementById('avgTemp3').innerHTML = avgTempDate4 + '°C.'
     document.getElementById('avgTemp4').innerHTML = avgTempDate5 + '°C.'
-    document.getElementById('desc2').innerHTML = date2[3].weather[0].description
-    document.getElementById('desc3').innerHTML = date3[3].weather[0].description
-    document.getElementById('desc4').innerHTML = date4[3].weather[0].description
-    document.getElementById('desc5').innerHTML = date5[3].weather[0].description
+    document.getElementById('desc2').innerHTML = entries[1][1][3].weather[0].description
+    document.getElementById('desc3').innerHTML = entries[2][1][3].weather[0].description
+    document.getElementById('desc4').innerHTML = entries[3][1][3].weather[0].description
+    document.getElementById('desc5').innerHTML = entries[4][1][3].weather[0].description
 
 }
 
 icons = () => {
 
-    let icon1 = current.weather[0].icon
-    let icon2 = date2[3].weather[0].icon
-    let icon3 = date3[3].weather[0].icon
-    let icon4 = date4[3].weather[0].icon
-    let icon5 = date5[3].weather[0].icon
+    let icon1 = entries[0][1][0].weather[0].icon
+    let icon2 = entries[1][1][3].weather[0].icon
+    let icon3 = entries[2][1][3].weather[0].icon
+    let icon4 = entries[3][1][3].weather[0].icon
+    let icon5 = entries[4][1][3].weather[0].icon
 
     let icon1Img = document.getElementById('icon1')
     icon1Img.src = `http://openweathermap.org/img/wn/${icon1}@2x.png`
@@ -96,40 +125,6 @@ icons = () => {
     let icon5Img = document.getElementById('icon5')
     icon5Img.src = `http://openweathermap.org/img/wn/${icon5}@2x.png`
 
-}
-
-weather = () => {
-
-    document.getElementById("run").addEventListener("click", function () {
-
-        let cityInput = document.getElementById('form1').value
-
-        fetch (`http://api.openweathermap.org/data/2.5/forecast?q=${cityInput}&appid=a33b814fb5f71647a19972bf2ab409d1`)
-            .then(response => {return response.json()})
-            .then(data => {
-
-                cityName = data.city.name;
-                let arrayDataLength = data.list.length
-
-                dates = []
-
-                for (let i = 0; i < arrayDataLength; i++){
-                    let dateMil = data.list[i].dt
-                    let newDate = new Date(dateMil*1000);
-                    let day = newDate.getUTCDate();
-                    let month = newDate.getMonth() + 1;
-                    let date = day +'/'+ month;
-
-                    if (!(date in dates)) {dates[date]= [];}
-
-                    dates[date].push(data.list[i]);
-
-                }
-            })
-            .then(calcTemperatures)
-            .then(styling)
-            .then(icons)
-    })
 }
 
 weather()
