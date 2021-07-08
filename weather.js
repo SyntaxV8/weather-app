@@ -4,7 +4,6 @@ let avgTempDate2;
 let avgTempDate3;
 let avgTempDate4;
 let avgTempDate5;
-let entries;
 
 weather = () => {
 
@@ -33,16 +32,18 @@ weather = () => {
                     dates[date].push(data.list[i]);
                 }
 
-                entries = Object.entries(dates)
+                // covert to array
+                const entries = Object.entries(dates)
 
-                calcTemperatures();
-                styling(cityName);
-                icons();
+
+                calcTemperatures(entries);
+                styling(cityName, entries);
+                icons(entries);
             })
     })
 }
 
-calcTemperatures = () => {
+calcTemperatures = (entries) => {
 
 
 
@@ -80,7 +81,7 @@ calcTemperatures = () => {
 
 }
 
-styling = (cityName) => {
+styling = (cityName, entries) => {
 
     document.getElementById('weatherCards').classList.remove('noDisplay')
     document.getElementById('cityName').classList.remove('noDisplay')
@@ -102,7 +103,7 @@ styling = (cityName) => {
 
 }
 
-icons = () => {
+icons = (entries) => {
 
     let icon1 = entries[0][1][0].weather[0].icon
     let icon2 = entries[1][1][3].weather[0].icon
