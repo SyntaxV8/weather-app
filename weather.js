@@ -1,10 +1,3 @@
-let currentTemp;
-let currentDesc;
-// let avgTempDate2;
-let avgTempDate3;
-let avgTempDate4;
-let avgTempDate5;
-
 weather = () => {
 
     document.getElementById("run").addEventListener("click", function () {
@@ -35,20 +28,20 @@ weather = () => {
                 // covert to array
                 let entries = Object.entries(dates)
 
-                console.log(entries)
+
                 entries = calcTemperatures(entries);
                 styling(cityName, entries);
                 icons(entries);
+
+                console.log(entries)
             })
     })
 }
 
 calcTemperatures = (entries) => {
 
-
-
-    currentTemp = Math.floor(entries[0][1][0].main.temp - 273.15)
-    currentDesc = entries[0][1][0].weather[0].description
+    entries[0][1].currentTemp = Math.floor(entries[0][1][0].main.temp - 273.15)
+    entries[0][1].currentDesc = entries[0][1][0].weather[0].description
 
     let date2 = entries[1][1]
     let date3 = entries[2][1]
@@ -61,23 +54,23 @@ calcTemperatures = (entries) => {
     }
     entries[1][1].averageTemperature = Math.floor((avgTempDate2 / date2.length) - 273.15)
 
-    avgTempDate3 = 0;
+    let avgTempDate3 = 0;
     for (let i = 0; i < date3.length; i++) {
         avgTempDate3 += date3[i].main.temp;
     }
-    avgTempDate3 = Math.floor((avgTempDate3 / date3.length) - 273.15)
+    entries[2][1].averageTemperature = Math.floor((avgTempDate3 / date3.length) - 273.15)
 
-    avgTempDate4 = 0;
+    let avgTempDate4 = 0;
     for (let i = 0; i < date4.length; i++) {
         avgTempDate4 += date4[i].main.temp;
     }
-    avgTempDate4 = Math.floor((avgTempDate4 / date4.length) - 273.15)
+    entries[3][1].averageTemperature = Math.floor((avgTempDate4 / date4.length) - 273.15)
 
-    avgTempDate5 = 0;
+    let avgTempDate5 = 0;
     for (let i = 0; i < date5.length; i++) {
         avgTempDate5 += date5[i].main.temp;
     }
-    avgTempDate5 = Math.floor((avgTempDate5 / date5.length) - 273.15)
+    entries[4][1].averageTemperature = Math.floor((avgTempDate5 / date5.length) - 273.15)
 
     return entries;
 }
@@ -91,12 +84,12 @@ styling = (cityName, entries) => {
     document.getElementById('name3').innerHTML = entries[2][0]
     document.getElementById('name4').innerHTML = entries[3][0]
     document.getElementById('name5').innerHTML = entries[4][0]
-    document.getElementById('currentTemp').innerHTML = currentTemp + '°C.'
-    document.getElementById('currentDesc').innerHTML = currentDesc
+    document.getElementById('currentTemp').innerHTML = entries[0][1].currentTemp + '°C.'
+    document.getElementById('currentDesc').innerHTML = entries[0][1].currentDesc
     document.getElementById('avgTemp1').innerHTML = entries[1][1].averageTemperature + '°C.'
-    document.getElementById('avgTemp2').innerHTML = avgTempDate3 + '°C.'
-    document.getElementById('avgTemp3').innerHTML = avgTempDate4 + '°C.'
-    document.getElementById('avgTemp4').innerHTML = avgTempDate5 + '°C.'
+    document.getElementById('avgTemp2').innerHTML = entries[2][1].averageTemperature + '°C.'
+    document.getElementById('avgTemp3').innerHTML = entries[3][1].averageTemperature + '°C.'
+    document.getElementById('avgTemp4').innerHTML = entries[4][1].averageTemperature + '°C.'
     document.getElementById('desc2').innerHTML = entries[1][1][3].weather[0].description
     document.getElementById('desc3').innerHTML = entries[2][1][3].weather[0].description
     document.getElementById('desc4').innerHTML = entries[3][1][3].weather[0].description
